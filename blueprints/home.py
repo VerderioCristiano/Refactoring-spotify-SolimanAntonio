@@ -8,7 +8,7 @@ home_bp = Blueprint("home", __name__)
 def home():
     sp = get_spotify_client()
     if not isinstance(sp, spotipy.Spotify):
-        return sp  # Redirect response
+        return sp  
 
     try:
         user_info = sp.current_user()
