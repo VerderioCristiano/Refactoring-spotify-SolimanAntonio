@@ -16,10 +16,17 @@ def home():
     except Exception:
         return redirect(url_for("auth.login"))
 
-    playlist_id = request.args.get("playlist_id")
-    tracks = []
-    if playlist_id:
-        tracks_data = sp.playlist_items(playlist_id)["items"]
+    return render_template("home.html", user_info=user_info, playlists=playlists)
+
+@home_bp.route("/playlist/<playlist_id>")
+def playlist(playlist_id):
+    sp = get_spotify_client()
+    if not isinstance(sp, spotipy.Spotify):
+        return sp  
+    
+    try:
+        playlist_data = sp.playlist(playlist_id)
+        tracks_data = playlist_data["tracks"]["items"]
         tracks = [
             {
                 "name": track["track"]["name"],
@@ -29,5 +36,7 @@ def home():
             }
             for track in tracks_data if track.get("track")
         ]
+    except Exception:
+        return redirect(url_for("auth.login"))
 
-    return render_template("home.html", user_info=user_info, playlists=playlists, tracks=tracks)
+    return render_template("playlist.html", tracks=tracks)

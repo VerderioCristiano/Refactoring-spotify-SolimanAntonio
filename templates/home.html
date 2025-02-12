@@ -15,7 +15,12 @@
         <ul>
             {% for playlist in playlists %}
                 <li>
-                    <a href="{{ url_for('home.home', playlist_id=playlist['id']) }}">{{ playlist['name'] }}</a>
+                    <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">
+                        {% if playlist['images'] %}
+                            <img src="{{ playlist['images'][0]['url'] }}" width="50" alt="Copertina playlist">
+                        {% endif %}
+                        {{ playlist['name'] }}
+                    </a>
                 </li>
             {% endfor %}
         </ul>
