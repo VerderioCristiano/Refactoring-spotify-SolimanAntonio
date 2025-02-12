@@ -1,16 +1,20 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
 from services.spotify_oauth import get_spotify_client
+import spotipy
 
 home_bp = Blueprint("home", __name__)
 
 @home_bp.route("/")
 def home():
     sp = get_spotify_client()
-    if isinstance(sp, str):  # Se il client restituisce un redirect, lo eseguiamo
-        return sp
+    if not isinstance(sp, spotipy.Spotify):
+        return sp  # Redirect response
 
-    user_info = sp.current_user()
-    playlists = sp.current_user_playlists()["items"]
+    try:
+        user_info = sp.current_user()
+        playlists = sp.current_user_playlists()["items"]
+    except Exception:
+        return redirect(url_for("auth.login"))
 
     playlist_id = request.args.get("playlist_id")
     tracks = []
@@ -21,9 +25,9 @@ def home():
                 "name": track["track"]["name"],
                 "artist": track["track"]["artists"][0]["name"],
                 "album": track["track"]["album"]["name"],
-                "cover": track["track"]["album"]["images"][0]["url"] if track["track"]["album"]["images"] else None
+                "cover": track["track"]["album"].get("images", [{}])[0].get("url")
             }
-            for track in tracks_data
+            for track in tracks_data if track.get("track")
         ]
 
     return render_template("home.html", user_info=user_info, playlists=playlists, tracks=tracks)

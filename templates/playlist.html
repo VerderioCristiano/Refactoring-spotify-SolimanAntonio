@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Brani della Playlist{% endblock %}
+
+{% block content %}
+    <h2>Brani della Playlist:</h2>
+
+    {% if tracks %}
+        <ul>
+            {% for track in tracks %}
+                <li>
+                    <strong>{{ track['name'] }}</strong> - {{ track['artist'] }} ({{ track['album'] }})
+                    {% if track['cover'] %}
+                        <img src="{{ track['cover'] }}" width="50" alt="Copertina album">
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nessun brano disponibile.</p>
+    {% endif %}
+{% endblock %}

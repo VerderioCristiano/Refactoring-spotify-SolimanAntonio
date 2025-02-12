@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Profilo Utente{% endblock %}
+
+{% block content %}
+    <h1>Benvenuto, {{ user_info['display_name'] }}!</h1>
+
+    {% if user_info['images'] %}
+        <img src="{{ user_info['images'][0]['url'] }}" width="200" alt="Immagine profilo">
+    {% endif %}
+
+    <h2>Le tue Playlist:</h2>
+
+    {% if playlists %}
+        <ul>
+            {% for playlist in playlists %}
+                <li>
+                    <a href="{{ url_for('home.home', playlist_id=playlist['id']) }}">{{ playlist['name'] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Non hai playlist disponibili.</p>
+    {% endif %}
+{% endblock %}
