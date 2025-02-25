@@ -27,4 +27,27 @@
     {% else %}
         <p>Non hai playlist disponibili.</p>
     {% endif %}
+
+    <!-- Barra di ricerca -->
+    <form method="POST" action="{{ url_for('home.home') }}">
+        <input type="text" name="query" placeholder="Cerca playlist pubbliche..." value="{{ query or '' }}">
+        <button type="submit">Cerca</button>
+    </form>
+
+    <!-- Risultati della ricerca -->
+    {% if search_results %}
+        <h2>Risultati della Ricerca:</h2>
+        <ul>
+            {% for playlist in search_results %}
+                <li>
+                    <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">
+                        {% if playlist['image'] %}
+                            <img src="{{ playlist['image'] }}" width="50" alt="Copertina playlist">
+                        {% endif %}
+                        {{ playlist['name'] }} - Creato da {{ playlist['owner'] }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

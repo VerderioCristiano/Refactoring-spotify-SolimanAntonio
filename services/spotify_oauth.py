@@ -4,7 +4,7 @@ from flask import session, redirect, url_for
 
 SPOTIFY_CLIENT_ID = "d74cb805ae4f4e9c87c5d361d8adade3"
 SPOTIFY_CLIENT_SECRET = "3a61d65da5914d1789080bccbc68e0fd"
-SPOTIFY_REDIRECT_URI = "https://fuzzy-space-umbrella-5gqp7pj9vj5qfv7v4-5000.app.github.dev/callback"
+SPOTIFY_REDIRECT_URI = "https://bug-free-chainsaw-jj5wpwvgrvx7c4p9-5000.app.github.dev/callback"
 
 scope = "user-read-private playlist-read-private"
 
