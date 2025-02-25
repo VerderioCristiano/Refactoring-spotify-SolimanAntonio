@@ -31,13 +31,13 @@
         <p>Se desideri vedere le tue playlist personali, effettua il login!</p>
     {% endif %}
 
-    <!-- Barra di ricerca per playlist pubbliche -->
+    
     <form method="POST" action="{{ url_for('home.home') }}">
         <input type="text" name="query" placeholder="Cerca playlist pubbliche..." value="{{ query or '' }}">
         <button type="submit">Cerca</button>
     </form>
 
-    <!-- Risultati della ricerca -->
+  
     {% if search_results %}
         <h2>Risultati della Ricerca:</h2>
         <ul>
@@ -53,4 +53,5 @@
             {% endfor %}
         </ul>
     {% endif %}
+
 {% endblock %}
