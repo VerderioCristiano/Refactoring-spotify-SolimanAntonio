@@ -10,11 +10,11 @@ def home():
 
     user_info, playlists = None, []
     try:
-        if isinstance(sp, spotipy.Spotify):  # Controllo se ho un client valido
+        if isinstance(sp, spotipy.Spotify): 
             user_info = sp.current_user()
             playlists = sp.current_user_playlists()["items"]
     except Exception:
-        pass  # Se l'utente non è autenticato, non mostriamo nulla
+        pass  
 
     return render_template("home.html", user_info=user_info, playlists=playlists)
 
@@ -38,6 +38,6 @@ def playlist(playlist_id):
                 for track in tracks_data if track.get("track")
             ]
     except Exception:
-        pass  # Se c'è un errore, lasciamo la pagina vuota o con un messaggio
+        pass  
 
     return render_template("playlist.html", playlist=playlist_data, tracks=tracks)
