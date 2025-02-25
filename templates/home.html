@@ -1,34 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Profilo Utente{% endblock %}
+{% block title %}Pagina Principale{% endblock %}
 
 {% block content %}
-    <h1>Benvenuto, {{ user_info['display_name'] }}!</h1>
+    <h1>Benvenuto{{ user_info['display_name'] if user_info else '' }}!</h1>
 
-    {% if user_info['images'] %}
+    {% if user_info and user_info['images'] %}
         <img src="{{ user_info['images'][0]['url'] }}" width="200" alt="Immagine profilo">
     {% endif %}
 
     <h2>Le tue Playlist:</h2>
-
-    {% if playlists %}
-        <ul>
-            {% for playlist in playlists %}
-                <li>
-                    <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">
-                        {% if playlist['images'] %}
-                            <img src="{{ playlist['images'][0]['url'] }}" width="50" alt="Copertina playlist">
-                        {% endif %}
-                        {{ playlist['name'] }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+    {% if user_info %}
+        {% if playlists %}
+            <ul>
+                {% for playlist in playlists %}
+                    <li>
+                        <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">
+                            {% if playlist['images'] %}
+                                <img src="{{ playlist['images'][0]['url'] }}" width="50" alt="Copertina playlist">
+                            {% endif %}
+                            {{ playlist['name'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Non hai playlist disponibili.</p>
+        {% endif %}
     {% else %}
-        <p>Non hai playlist disponibili.</p>
+        <p>Se desideri vedere le tue playlist personali, effettua il login!</p>
     {% endif %}
 
-    <!-- Barra di ricerca -->
+    <!-- Barra di ricerca per playlist pubbliche -->
     <form method="POST" action="{{ url_for('home.home') }}">
         <input type="text" name="query" placeholder="Cerca playlist pubbliche..." value="{{ query or '' }}">
         <button type="submit">Cerca</button>
