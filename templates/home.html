@@ -53,5 +53,40 @@
             {% endfor %}
         </ul>
     {% endif %}
-
+        
+    <h1>Scopri Playlist Casuali</h1>
+    <button onclick="fetchPlaylists()">Mostra Playlist</button>
+    <div id="playlists"></div>
+    
+    <script>
+        function fetchPlaylists() {
+            fetch("/random_playlists")
+                .then(response => response.json())
+                .then(data => {
+                    const playlistsDiv = document.getElementById("playlists");
+                    playlistsDiv.innerHTML = ""; 
+    
+                    if (data.error) {
+                        playlistsDiv.innerHTML = `<p style='color: red;'>Errore: ${data.error}</p>`;
+                        return;
+                    }
+    
+                    data.forEach(playlist => {
+                        playlistsDiv.innerHTML += `
+                            <div style="margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 10px;">
+                                <h2>${playlist.title}</h2>
+                                <p>Creato da: ${playlist.owner}</p>
+                                <a href="${playlist.url}" target="_blank">Apri su Spotify</a>
+                                <br>
+                                <img src="${playlist.image}" alt="Playlist Cover" width="200" onerror="this.style.display='none'">
+                            </div>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    document.getElementById("playlists").innerHTML = `<p style='color: red;'>Errore di connessione</p>`;
+                });
+        }
+    </script>
+    
 {% endblock %}
