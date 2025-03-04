@@ -21,7 +21,7 @@ def home():
         query = request.form.get("query", "").strip()
         if query:
             try:
-                results = sp.search(q=query, type="playlist", limit=10)
+                results = sp.search(q=query, type="playlist", limit=50)
                 search_results = [
                     {
                         "id": playlist["id"],
