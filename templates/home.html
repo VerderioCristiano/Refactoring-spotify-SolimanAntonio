@@ -1,92 +1,27 @@
-{% extends "base.html" %}
-
-{% block title %}Pagina Principale{% endblock %}
-
-{% block content %}
-    <h1>Benvenuto {{ user_info['display_name'] if user_info else '' }}!</h1>
-
-    {% if user_info and user_info['images'] %}
-        <img src="{{ user_info['images'][0]['url'] }}" width="200" alt="Immagine profilo">
-    {% endif %}
-
-    <h2>Le tue Playlist:</h2>
-    {% if user_info %}
-        {% if playlists %}
-            <ul>
-                {% for playlist in playlists %}
-                    <li>
-                        <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">
-                            {% if playlist['images'] %}
-                                <img src="{{ playlist['images'][0]['url'] }}" width="50" alt="Copertina playlist">
-                            {% endif %}
-                            {{ playlist['name'] }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Non hai playlist disponibili.</p>
-        {% endif %}
-    {% else %}
-        <p>Se desideri vedere le tue playlist personali, effettua il login!</p>
-    {% endif %}
-
-    
-    <form method="POST" action="{{ url_for('home.home') }}">
-        <input type="text" name="query" placeholder="Cerca playlist pubbliche..." value="{{ query or '' }}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Benvenuto, {{ username }}</h1>
+    <form method="GET" action="/home">
+        <input type="text" name="query" placeholder="Cerca playlist pubbliche">
         <button type="submit">Cerca</button>
     </form>
-
-  
-    {% if search_results %}
-        <h2>Risultati della Ricerca:</h2>
-        <ul>
-            {% for playlist in search_results %}
-                <li>
-                    <a href="{{ url_for('home.playlist', playlist_id=playlist['id']) }}">
-                        {% if playlist['image'] %}
-                            <img src="{{ playlist['image'] }}" width="50" alt="Copertina playlist">
-                        {% endif %}
-                        {{ playlist['name'] }} - Creato da {{ playlist['owner'] }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-        
-    <h1>Scopri Playlist Casuali</h1>
-    <button onclick="fetchPlaylists()">Mostra Playlist</button>
-    <div id="playlists"></div>
-    
-    <script>
-        function fetchPlaylists() {
-            fetch("/random_playlists")
-                .then(response => response.json())
-                .then(data => {
-                    const playlistsDiv = document.getElementById("playlists");
-                    playlistsDiv.innerHTML = ""; 
-    
-                    if (data.error) {
-                        playlistsDiv.innerHTML = `<p style='color: red;'>Errore: ${data.error}</p>`;
-                        return;
-                    }
-    
-                    data.forEach(playlist => {
-                        playlistsDiv.innerHTML += `
-                            <div style="margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 10px;">
-                                <h2>${playlist.title}</h2>
-                                <p>Creato da: ${playlist.owner}</p>
-                                <a href="${playlist.url}" target="_blank">Apri su Spotify</a>
-                                <br>
-                                <img src="${playlist.image}" alt="Playlist Cover" width="200" onerror="this.style.display='none'">
-                            </div>
-                        `;
-                    });
-                })
-                .catch(error => {
-                    document.getElementById("playlists").innerHTML = `<p style='color: red;'>Errore di connessione</p>`;
-                });
-        }
-    </script>
-    
-{% endblock %}
+    <button onclick="window.location.href='/spotify_login'">Login Spotify</button>
+    <button onclick="window.location.href='/my_playlists'">Le mie Playlist</button>
+    <button onclick="window.location.href='/random_playlists'">Ricarica Playlist Casuali</button>
+    <button onclick="window.location.href='/logout'">Logout</button>
+    <h2>Playlist</h2>
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                <img src="{{ playlist.image }}" alt="Playlist Image" width="50">
+                <a href="/playlist/{{ playlist.url.split('/')[-1] }}">{{ playlist.title }}</a> - {{ playlist.owner }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

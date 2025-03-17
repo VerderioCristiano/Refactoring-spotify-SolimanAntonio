@@ -3,20 +3,24 @@
 {% block title %}Brani della Playlist{% endblock %}
 
 {% block content %}
-    <h2>Brani della Playlist:</h2>
-
-    {% if tracks %}
-        <ul>
-            {% for track in tracks %}
-                <li>
-                    <strong>{{ track['name'] }}</strong> - {{ track['artist'] }} ({{ track['album'] }})
-                    {% if track['cover'] %}
-                        <img src="{{ track['cover'] }}" width="50" alt="Copertina album">
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Nessun brano disponibile.</p>
-    {% endif %}
-{% endblock %}
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<h1>Brani della Playlist</h1>
+{% if error %}
+    <p style="color: red;">{{ error }}</p>
+{% else %}
+    <ul>
+        {% for track in tracks %}
+            <li>
+                <strong>{{ track.name }}</strong> - {{ track.artist }} ({{ track.album }})
+                {% if track['cover'] %}
+                <img src="{{ track['cover'] }}" width="50" alt="Copertina album">
+                {% endif %}
+                <a href="{{ track.url }}" target="_blank">Ascolta su Spotify</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<a href="{{ url_for('home') }}" class="button">Torna alla Home</a>
+{% endblock %}
