@@ -11,7 +11,7 @@
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <p>Non hai un account? <a href="{{ url_for('register') }}">Registrati qui</a></p>
+    <p>Non hai un account? <a href="{{ url_for('auth.register') }}">Registrati qui</a></p>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}

@@ -6,20 +6,46 @@
 </head>
 <body>
     <h1>Benvenuto, {{ username }}</h1>
-    <form method="GET" action="/home">
+    <form method="GET" action="{{ url_for('home.home') }}">
         <input type="text" name="query" placeholder="Cerca playlist pubbliche">
         <button type="submit">Cerca</button>
     </form>
-    <button onclick="window.location.href='/spotify_login'">Login Spotify</button>
-    <button onclick="window.location.href='/my_playlists'">Le mie Playlist</button>
-    <button onclick="window.location.href='/random_playlists'">Ricarica Playlist Casuali</button>
-    <button onclick="window.location.href='/logout'">Logout</button>
-    <h2>Playlist</h2>
+
+    <!-- Bottone Login Spotify (visibile solo se non autenticato) -->
+    {% if 'token_info' not in session %}
+        <button onclick="window.location.href='{{ url_for('spotify.spotify_login') }}'">Login Spotify</button>
+    {% endif %}
+
+    <!-- Bottone Logout Spotify (visibile solo se autenticato) -->
+    {% if 'token_info' in session %}
+        <button onclick="window.location.href='{{ url_for('spotify.spotify_logout') }}'">Logout Spotify</button>
+    {% endif %}
+
+    <button onclick="window.location.href='{{ url_for('spotify.saved_playlists') }}'">Playlist Pubbliche Salvate</button>
+
+    <!-- Bottone Playlist Private (visibile solo se autenticato) -->
+    {% if 'token_info' in session %}
+        <button onclick="window.location.href='{{ url_for('spotify.private_playlists') }}'">Playlist Private di Spotify</button>
+    {% endif %}
+
+    <button onclick="window.location.href='{{ url_for('home.home') }}'">Ricarica Playlist Casuali</button>
+    <button onclick="window.location.href='{{ url_for('auth.logout') }}'">Logout</button>
+
+    <h2>Risultati della Ricerca</h2>
     <ul>
         {% for playlist in playlists %}
             <li>
+                {% if playlist.image %}
                 <img src="{{ playlist.image }}" alt="Playlist Image" width="50">
-                <a href="/playlist/{{ playlist.url.split('/')[-1] }}">{{ playlist.title }}</a> - {{ playlist.owner }}
+                {% endif %}
+                <a href="{{ url_for('spotify.playlist', playlist_id=playlist.id) }}">{{ playlist.name }}</a> - {{ playlist.owner }}
+                <form method="POST" action="{{ url_for('spotify.save_playlist') }}" style="display:inline;">
+                    <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
+                    <input type="hidden" name="playlist_name" value="{{ playlist.name }}">
+                    <input type="hidden" name="playlist_owner" value="{{ playlist.owner }}">
+                    <input type="hidden" name="playlist_image" value="{{ playlist.image }}">
+                    <button type="submit">Salva Playlist</button>
+                </form>
             </li>
         {% endfor %}
     </ul>

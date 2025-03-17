@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for,session
+from flask import render_template, request, redirect, url_for, session
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User
@@ -17,8 +17,8 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user) 
-            return redirect(url_for('home'))
+            login_user(new_user)  # Login automatico dopo la registrazione
+            return redirect(url_for('home.home'))
         except Exception as e:
             db.session.rollback()
             return render_template('register.html', error=f"Errore durante la registrazione: {e}")
@@ -32,7 +32,7 @@ def login():
 
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('home.home'))
 
         return render_template('login.html', error="Credenziali non valide.")
     return render_template('login.html', error=None)
@@ -49,7 +49,6 @@ def home():
 
 @login_required
 def logout():
-
     session.pop("token_info", None)
     logout_user()
-    return redirect(url_for("login"))
+    return redirect(url_for("auth.login"))
