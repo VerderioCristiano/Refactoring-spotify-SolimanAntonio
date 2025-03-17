@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -5,163 +6,238 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    font-family: 'Poppins', sans-serif;
     line-height: 1.6;
+    background-color: #121212; /* Sfondo scuro per un look moderno */
+    color: #ffffff;
+    padding: 20px;
 }
 
 header {
-    background-color: #1DB954;
+    background-color: #1DB954; /* Verde Spotify */
     color: white;
     padding: 20px;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
+    font-size: 2.5rem;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background 0.3s;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    color: #1ed760; /* Verde più chiaro per l'hover */
 }
 
 main {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
 }
 
-h2 {
-    margin: 20px 0 10px;
+h1, h2 {
     color: #1DB954;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
-img {
-    border-radius: 5px;
+form {
+    margin-bottom: 30px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #1DB954;
+    border-radius: 8px;
+    background-color: #1e1e1e;
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #1ed760;
+    outline: none;
+}
+
+button {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    margin: 10px 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #1ed760;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 ul {
     list-style-type: none;
-    padding: 0;
 }
 
 li {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    transition: transform 0.2s;
+    background-color: #1e1e1e;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 li:hover {
-    transform: scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-form {
-    display: flex;
-    margin: 20px 0;
+a {
+    color: #1DB954;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-form input[type="text"] {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px;
+a:hover {
+    color: #1ed760;
 }
 
-form button {
-    padding: 10px 15px;
-    border: none;
+img {
+    vertical-align: middle;
+    border-radius: 8px;
+}
+
+.error {
+    color: #ff6b6b;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.button {
+    display: inline-block;
     background-color: #1DB954;
     color: white;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-    transition: background 0.3s;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-form button:hover {
-    background-color: #1aa34a;
+.button:hover {
+    background-color: #1ed760;
+    transform: translateY(-2px);
 }
 
-#playlists {
-    margin-top: 20px;
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+main {
+    animation: fadeIn 0.8s ease-out;
+}
+
+
+button, .button {
+    position: relative;
+    overflow: hidden;
+}
+
+button::after, .button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease;
+}
+
+button:hover::after, .button:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+.playlist-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.search-results li {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-#playlists div {
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    align-items: center;
     padding: 15px;
-    background-color: #f9f9f9;
-    margin: 10px;
-    width: 200px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s, transform 0.2s;
 }
 
-#playlists div:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    transform: scale(1.02);
-}
 
-#playlists div img {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: 5px;
-    margin-top: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#playlists div {
+.track-list {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+
+.track-list li {
+    display: flex;
     align-items: center;
-    text-align: center;
+    gap: 15px;
 }
 
-p[style*="color: red"] {
-    color: red;
+.track-list img {
+    width: 50px;
+    height: 50px;
 }
 
-h1 {
-    font-size: 2rem;
-    margin: 20px 0;
-    color: #1DB954;
-    text-align: center;
-}
 
-button {
-    display: block;
-    margin: 0 auto;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #1DB954;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-}
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
 
-button:hover {
-    background-color: #1aa34a;
-    transform: scale(1.05);
+    nav a {
+        margin: 0 10px;
+    }
+
+    .search-results {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
 }
