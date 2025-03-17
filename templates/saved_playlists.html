@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Pubbliche Salvate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Playlist Pubbliche Salvate</h1>
+    <a href="{{ url_for('home.home') }}">Torna alla Home</a>
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                {% if playlist.image %}
+                <img src="{{ playlist.image }}" alt="Playlist Image" width="50">
+                {% endif %}
+                <a href="/playlist/{{ playlist.id }}">{{ playlist.name }}</a> - {{ playlist.owner }}
+            </li>
+        {% else %}
+            <li>Nessuna playlist salvata.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

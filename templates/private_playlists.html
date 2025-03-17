@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Playlist Private di Spotify</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Playlist Private di Spotify</h1>
+    <a href="{{ url_for('home.home') }}">Torna alla Home</a>
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                {% if playlist.image %}
+                <img src="{{ playlist.image }}" alt="Playlist Image" width="50">
+                {% endif %}
+                <a href="/playlist/{{ playlist.id }}">{{ playlist.name }}</a> - {{ playlist.owner }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
