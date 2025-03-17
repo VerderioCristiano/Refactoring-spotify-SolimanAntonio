@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Registrazione</title>
+    <title>Brani della Playlist</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Registrazione</h1>
-    <form method="POST">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Registrati</button>
-    </form>
-    <p>Hai già un account? <a href="{{ url_for('auth.login') }}">Accedi qui</a></p>
+    <h1>Brani della Playlist</h1>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <ul>
+            <a href="{{ url_for('home.home') }}" class="button">Torna alla Home</a>
+            {% for track in tracks %}
+                <li>
+                    <strong>{{ track.name }}</strong> - {{ track.artist }} ({{ track.album }})
+                    {% if track.cover %}
+                    <img src="{{ track.cover }}" width="50" alt="Copertina album">
+                    {% endif %}
+                    <a href="{{ track.url }}" target="_blank">Ascolta su Spotify</a>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
+    
 </body>
 </html>

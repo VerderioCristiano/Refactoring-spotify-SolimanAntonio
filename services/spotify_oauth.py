@@ -4,7 +4,6 @@ from flask import session, redirect, url_for, request, render_template
 import random
 import logging
 
-# Configurazione delle credenziali di Spotify
 SPOTIFY_CLIENT_ID = "d74cb805ae4f4e9c87c5d361d8adade3"
 SPOTIFY_CLIENT_SECRET = "3a61d65da5914d1789080bccbc68e0fd"
 SPOTIFY_REDIRECT_URI = "https://opulent-journey-v6v7j795p5qg3x5q-5000.app.github.dev/callback"
@@ -14,9 +13,6 @@ SCOPE = "user-read-private playlist-read-private playlist-read-collaborative"
 logging.basicConfig(level=logging.INFO)
 
 def get_spotify_auth():
-    """
-    Restituisce un'istanza di SpotifyOAuth per gestire l'autenticazione.
-    """
     return SpotifyOAuth(
         client_id=SPOTIFY_CLIENT_ID,
         client_secret=SPOTIFY_CLIENT_SECRET,
@@ -26,10 +22,6 @@ def get_spotify_auth():
     )
 
 def get_spotify_client():
-    """
-    Restituisce un client di Spotify autenticato.
-    Se il token è scaduto, lo aggiorna automaticamente.
-    """
     token_info = session.get("token_info")
     if token_info:
         auth_manager = get_spotify_auth()
@@ -55,7 +47,7 @@ def get_random_playlists():
             try:
                 valid_playlists.append({
                     "id": playlist.get("id"),
-                    "name": playlist.get("name", "Senza titolo"),  # Usa "name" invece di "title"
+                    "name": playlist.get("name", "Senza titolo"),  
                     "owner": playlist.get("owner", {}).get("display_name", "Sconosciuto"),
                     "url": playlist.get("external_urls", {}).get("spotify", "#"),
                     "image": playlist["images"][0]["url"] if playlist.get("images") else None
@@ -72,7 +64,7 @@ def search_playlists(query):
     return [
         {
             "id": playlist.get("id"),
-            "name": playlist.get("name", "Senza titolo"),  # Usa "name" invece di "title"
+            "name": playlist.get("name", "Senza titolo"), 
             "owner": playlist.get("owner", {}).get("display_name", "Sconosciuto"),
             "url": playlist.get("external_urls", {}).get("spotify", "#"),
             "image": playlist["images"][0]["url"] if playlist.get("images") else None
