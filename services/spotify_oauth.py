@@ -6,10 +6,10 @@ import logging
 
 SPOTIFY_CLIENT_ID = "d74cb805ae4f4e9c87c5d361d8adade3"
 SPOTIFY_CLIENT_SECRET = "3a61d65da5914d1789080bccbc68e0fd"
-SPOTIFY_REDIRECT_URI = "https://opulent-journey-v6v7j795p5qg3x5q-5000.app.github.dev/callback"
+SPOTIFY_REDIRECT_URI = "https://super-engine-pjrq5q4674prf7r99-5000.app.github.dev/callback"
 SCOPE = "user-read-private playlist-read-private playlist-read-collaborative"
 
-# Configurazione del logging
+
 logging.basicConfig(level=logging.INFO)
 
 def get_spotify_auth():
@@ -72,40 +72,60 @@ def search_playlists(query):
         for playlist in playlists if playlist
     ]
 
+
 def get_playlist_tracks(playlist_id):
-    """
-    Restituisce i brani di una playlist specifica.
-    """
+    
     sp = get_spotify_client()
     try:
         results = sp.playlist_tracks(playlist_id)
-        tracks = [
-            {
-                "name": track["track"]["name"],
-                "artist": ", ".join(artist["name"] for artist in track["track"]["artists"]),
-                "album": track["track"]["album"]["name"],
-                "url": track["track"]["external_urls"]["spotify"],
-                "cover": track["track"]["album"]["images"][0]["url"] if track["track"]["album"]["images"] else None
-            }
-            for track in results["items"]
-        ]
-        return render_template("playlist.html", tracks=tracks)
+        tracks = []
+
+        for track in results["items"]:
+            track_info = track["track"]
+            if not track_info:  
+                continue
+
+           
+            artists = track_info["artists"]
+            artist_ids = [artist["id"] for artist in artists]
+
+            
+            genres = set()
+            if artist_ids:
+                artists_info = sp.artists(artist_ids)["artists"]
+                for artist in artists_info:
+                    genres.update(artist.get("genres", []))
+
+            
+            cover = None
+            if track_info["album"]["images"]:
+                cover = track_info["album"]["images"][0]["url"]  
+
+            
+            tracks.append({
+                "name": track_info["name"],
+                "artist": ", ".join(artist["name"] for artist in artists),
+                "album": track_info["album"]["name"],
+                "popularity": track_info.get("popularity", 0),
+                "genre": ", ".join(genres) if genres else "Sconosciuto",  
+                "cover": cover  
+               
+            })
+
+        return tracks
     except Exception as e:
         logging.error(f"Errore durante il recupero dei brani della playlist: {e}")
-        return render_template("playlist.html", tracks=[], error="Impossibile recuperare i brani della playlist.")
+        return []
+
 
 def spotify_login():
-    """
-    Reindirizza l'utente alla pagina di login di Spotify.
-    """
+    
     auth_manager = get_spotify_auth()
     auth_url = auth_manager.get_authorize_url()
     return redirect(auth_url)
 
 def spotify_callback():
-    """
-    Gestisce il callback di Spotify dopo il login.
-    """
+    
     auth_manager = get_spotify_auth()
     code = request.args.get("code")
     if not code:
@@ -119,9 +139,7 @@ def spotify_callback():
         return f"Errore durante il callback di Spotify: {e}", 500
 
 def get_user_playlists():
-    """
-    Restituisce le playlist private dell'utente autenticato.
-    """
+    
     if 'token_info' not in session:
         logging.warning("Nessun token_info nella sessione.")
         return []

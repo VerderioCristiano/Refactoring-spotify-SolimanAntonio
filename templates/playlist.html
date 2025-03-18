@@ -1,27 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brani della Playlist</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <h1>Brani della Playlist</h1>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% else %}
-        <ul>
-            <a href="{{ url_for('home.home') }}" class="button">Torna alla Home</a>
-            {% for track in tracks %}
-                <li>
-                    <strong>{{ track.name }}</strong> - {{ track.artist }} ({{ track.album }})
-                    {% if track.cover %}
-                    <img src="{{ track.cover }}" width="50" alt="Copertina album">
-                    {% endif %}
-                    <a href="{{ track.url }}" target="_blank">Ascolta su Spotify</a>
-                </li>
-            {% endfor %}
-        </ul>
+    <ul>
+        <a href="{{ url_for('home.home') }}" class="button">Torna alla Home</a>
+        {% for track in tracks %}
+            <li>
+                <strong>{{ track.name }}</strong> - {{ track.artist }} ({{ track.album }})
+                {% if track.cover %}
+                <img src="{{ track.cover }}" width="50" alt="Copertina album">
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
     {% endif %}
-    
+        
+     
+
+    </div>
 </body>
 </html>

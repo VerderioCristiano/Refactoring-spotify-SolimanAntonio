@@ -8,13 +8,13 @@
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
-    background-color: #121212; /* Sfondo scuro per un look moderno */
+    background-color: #121212; 
     color: #ffffff;
     padding: 20px;
 }
 
 header {
-    background-color: #1DB954; /* Verde Spotify */
+    background-color: #1DB954; 
     color: white;
     padding: 20px;
     text-align: center;
@@ -36,7 +36,7 @@ nav a {
 }
 
 nav a:hover {
-    color: #1ed760; /* Verde più chiaro per l'hover */
+    color: #1ed760; 
 }
 
 main {
