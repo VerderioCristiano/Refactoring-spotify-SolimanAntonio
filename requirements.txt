@@ -6,3 +6,5 @@ requests
 spotipy
 bcrypt
 Flask-Bcrypt
+pandas
+plotly
