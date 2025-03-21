@@ -13,7 +13,7 @@
 
     <!-- Bottone Login Spotify (visibile solo se non autenticato) -->
     {% if 'token_info' not in session %}
-        <button onclick="window.location.href='{{ url_for('spotify.spotify_login') }}'">Login Spotify</button>
+        <button onclick="window.location.href='{{ url_for('spotify.spotify_login') }}'">Collegati a Spotify</button>
     {% endif %}
 
     <!-- Bottone Logout Spotify (visibile solo se autenticato) -->
