@@ -73,8 +73,9 @@ def search_playlists(query):
     ]
 
 
+
+
 def get_playlist_tracks(playlist_id):
-    
     sp = get_spotify_client()
     try:
         results = sp.playlist_tracks(playlist_id)
@@ -85,11 +86,10 @@ def get_playlist_tracks(playlist_id):
             if not track_info:  
                 continue
 
-           
+            
             artists = track_info["artists"]
             artist_ids = [artist["id"] for artist in artists]
 
-            
             genres = set()
             if artist_ids:
                 artists_info = sp.artists(artist_ids)["artists"]
@@ -99,8 +99,16 @@ def get_playlist_tracks(playlist_id):
             
             cover = None
             if track_info["album"]["images"]:
-                cover = track_info["album"]["images"][0]["url"]  
-
+                cover = track_info["album"]["images"][0]["url"]
+            
+            
+            duration_ms = track_info.get("duration_ms", 0)
+            duration_min = duration_ms // 60000
+            duration_sec = (duration_ms % 60000) // 1000
+            duration = f"{duration_min}:{duration_sec:02d}"
+            
+           
+            release_year = track_info["album"].get("release_date", "Sconosciuto")[:4]
             
             tracks.append({
                 "name": track_info["name"],
@@ -108,14 +116,16 @@ def get_playlist_tracks(playlist_id):
                 "album": track_info["album"]["name"],
                 "popularity": track_info.get("popularity", 0),
                 "genre": ", ".join(genres) if genres else "Sconosciuto",  
-                "cover": cover  
-               
+                "cover": cover,
+                "duration": duration,
+                "release_year": release_year
             })
 
         return tracks
     except Exception as e:
         logging.error(f"Errore durante il recupero dei brani della playlist: {e}")
         return []
+
 
 
 def spotify_login():
