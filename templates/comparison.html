@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparazione Playlist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head>
+<body>
+    <h1>Comparazione tra {{ playlist1_name }} e {{ playlist2_name }}</h1>
+    <a href="{{ url_for('home.home') }}" class="button">Torna alla Home</a>
+    
+    <div class="comparison-container">
+        <h2>Brani in comune - Somiglianza: {{ charts.similarity|round(1) }}%</h2>
+        <div id="fig_tracks">{{ charts.fig_tracks|safe }}</div>
+        
+        {% if charts.fig_artists %}
+            <h2>Artisti in comune</h2>
+            <div id="fig_artists">{{ charts.fig_artists|safe }}</div>
+        {% endif %}
+        
+        <h2>Confronto popolarità media</h2>
+        <div id="fig_popularity">{{ charts.fig_popularity|safe }}</div>
+        
+        {% if charts.fig_genres %}
+            <h2>Distribuzione dei generi musicali</h2>
+            <div id="fig_genres">{{ charts.fig_genres|safe }}</div>
+        {% endif %}
+        
+        <h2>Distribuzione temporale dei brani</h2>
+        <div id="fig_years">{{ charts.fig_years|safe }}</div>
+    </div>
+</body>
+</html>

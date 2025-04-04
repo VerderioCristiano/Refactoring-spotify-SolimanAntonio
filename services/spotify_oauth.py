@@ -78,6 +78,11 @@ def search_playlists(query):
 def get_playlist_tracks(playlist_id):
     sp = get_spotify_client()
     try:
+        # Ottieni prima le informazioni della playlist
+        playlist_info = sp.playlist(playlist_id)
+        playlist_name = playlist_info.get('name', 'Senza titolo')
+        playlist_owner = playlist_info.get('owner', {}).get('display_name', 'Sconosciuto')
+        
         results = sp.playlist_tracks(playlist_id)
         tracks = []
 
@@ -86,36 +91,40 @@ def get_playlist_tracks(playlist_id):
             if not track_info:  
                 continue
 
-            
+            # Estrai informazioni sugli artisti
             artists = track_info["artists"]
             artist_ids = [artist["id"] for artist in artists]
-
+            
+            # Estrai generi musicali
             genres = set()
             if artist_ids:
                 artists_info = sp.artists(artist_ids)["artists"]
                 for artist in artists_info:
                     genres.update(artist.get("genres", []))
 
-            
+            # Estrai copertina album
             cover = None
             if track_info["album"]["images"]:
                 cover = track_info["album"]["images"][0]["url"]
             
-            
+            # Calcola durata in formato mm:ss
             duration_ms = track_info.get("duration_ms", 0)
             duration_min = duration_ms // 60000
             duration_sec = (duration_ms % 60000) // 1000
             duration = f"{duration_min}:{duration_sec:02d}"
             
-           
+            # Estrai anno di pubblicazione
             release_year = track_info["album"].get("release_date", "Sconosciuto")[:4]
             
+            # Aggiungi tutte le informazioni al dizionario del brano
             tracks.append({
+                "playlist_name": playlist_name,
+                "playlist_owner": playlist_owner,
                 "name": track_info["name"],
                 "artist": ", ".join(artist["name"] for artist in artists),
                 "album": track_info["album"]["name"],
                 "popularity": track_info.get("popularity", 0),
-                "genre": ", ".join(genres) if genres else "Sconosciuto",  
+                "genre": ", ".join(genres) if genres else "Sconosciuto",
                 "cover": cover,
                 "duration": duration,
                 "release_year": release_year
@@ -125,6 +134,7 @@ def get_playlist_tracks(playlist_id):
     except Exception as e:
         logging.error(f"Errore durante il recupero dei brani della playlist: {e}")
         return []
+
 
 
 

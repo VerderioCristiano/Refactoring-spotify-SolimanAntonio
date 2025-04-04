@@ -4,6 +4,7 @@ from models import db
 from blueprints.auth import auth_bp
 from blueprints.home import home_bp
 from blueprints.spotify import spotify_bp
+from blueprints.compare import compare_bp
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -16,7 +17,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
 
-
+app.register_blueprint(compare_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(home_bp)
 app.register_blueprint(spotify_bp)
