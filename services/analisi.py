@@ -79,10 +79,29 @@ def analyze_and_visualize(playlist_id):
         category_orders={"duration_range": labels}
     )
 
+    fig_popularity = px.histogram(
+        df, x="popularity", nbins=10, 
+        title="Distribuzione della Popolarità",
+        labels={"popularity": "Livello di Popolarità"}
+    )
+    
+    df_time = df[df["release_year"] != "Sconosciuto"].copy()
+    df_time["release_year"] = pd.to_numeric(df_time["release_year"], errors='coerce')
+    df_time.dropna(inplace=True)
+    df_time = df_time.groupby("release_year")["popularity"].mean().reset_index()
+    
+    fig_evolution = px.line(
+        df_time, x="release_year", y="popularity", 
+        title="Evoluzione della Popolarità nel Tempo",
+        labels={"release_year": "Anno di Pubblicazione", "popularity": "Popolarità Media"}
+    )
+    
     return {
         "fig_artists": fig_artists.to_html(full_html=False),
         "fig_albums": fig_albums.to_html(full_html=False),
         "fig_genres": fig_genres.to_html(full_html=False),
         "fig_release_year": fig_release_year.to_html(full_html=False),
         "fig_duration": fig_duration.to_html(full_html=False),
+        "fig_popularity": fig_popularity.to_html(full_html=False),
+        "fig_evolution": fig_evolution.to_html(full_html=False),
     }

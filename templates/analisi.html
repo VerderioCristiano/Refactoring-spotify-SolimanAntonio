@@ -29,6 +29,12 @@
 
             <h2>Distribuzione della Durata dei Brani</h2>
             <div id="fig_duration">{{ charts.fig_duration|safe }}</div>
+
+            <h2>Distribuzione della Popolarità</h2>
+            <div id="fig_popularity">{{ charts.fig_popularity|safe }}</div>
+
+            <h2>Evoluzione della Popolarità nel Tempo</h2>
+            <div id="fig_evolution">{{ charts.fig_evolution|safe }}</div>
         </div>
     {% else %}
         <p>Nessun grafico disponibile per questa playlist.</p>
