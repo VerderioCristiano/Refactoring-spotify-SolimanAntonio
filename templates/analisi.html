@@ -13,7 +13,6 @@
     <a href="{{ url_for('home.playlist', playlist_id=playlist_id) }}" class="button">Torna alla Playlist</a>
     <h1>Analisi della Playlist</h1>
 
-
     {% if charts %}
         <div class="charts">
             <h2>Top 5 Artisti</h2>
@@ -24,6 +23,12 @@
 
             <h2>Distribuzione dei Generi Musicali</h2>
             <div id="fig_genres">{{ charts.fig_genres|safe }}</div>
+
+            <h2>Distribuzione Temporale dei Brani</h2>
+            <div id="fig_release_year">{{ charts.fig_release_year|safe }}</div>
+
+            <h2>Distribuzione della Durata dei Brani</h2>
+            <div id="fig_duration">{{ charts.fig_duration|safe }}</div>
         </div>
     {% else %}
         <p>Nessun grafico disponibile per questa playlist.</p>
