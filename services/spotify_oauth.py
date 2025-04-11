@@ -128,6 +128,7 @@ def get_playlist_tracks(playlist_id):
                 "cover": cover,
                 "duration": duration,
                 "release_year": release_year
+                ""
             })
 
         return tracks
